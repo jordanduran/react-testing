@@ -40,7 +40,7 @@ test('counter display starts at 0', () => {
   expect(count).toBe('0');
 });
 
-test('clicking button increments counter display', () => {
+test('clicking increment button increments counter display', () => {
   const wrapper = setup();
 
   // Find button
@@ -51,4 +51,24 @@ test('clicking button increments counter display', () => {
   // Find display, and test that the count is being incremented
   const count = findByTestAttr(wrapper, 'count').text();
   expect(count).toBe('1');
+});
+
+test('clicking decrement button decrements counter display', () => {
+  const wrapper = setup();
+  const button = findByTestAttr(wrapper, 'decrement-button');
+  button.simulate('click');
+  const count = findByTestAttr(wrapper, 'count').text();
+  expect(count).toBe('0');
+});
+
+test('counter does not go below zero', () => {
+  const wrapper = setup();
+  const decrementButton = findByTestAttr(wrapper, 'decrement-button');
+  decrementButton.simulate('click');
+
+  const count = findByTestAttr(wrapper, 'count').text();
+  expect(count).toBe('0');
+
+  const errorMessage = findByTestAttr(wrapper, 'error-message');
+  expect(errorMessage.length).toBe(1);
 });
